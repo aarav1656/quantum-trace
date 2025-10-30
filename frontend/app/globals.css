@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: 30 64 175;
+    --color-secondary: 59 130 246;
+    --color-accent: 6 182 212;
+    --color-success: 16 185 129;
+    --color-warning: 245 158 11;
+    --color-error: 239 68 68;
+    --color-surface: 248 250 252;
+    --color-text: 30 41 59;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-supply-text;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+
+  /* Focus styles for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-supply-primary focus:ring-offset-2;
+  }
+
+  /* Loading animations */
+  .loading-dots {
+    @apply inline-flex items-center;
+  }
+
+  .loading-dots::after {
+    content: '';
+    @apply ml-1 w-1 h-1 bg-current rounded-full animate-pulse;
+  }
+
+  /* Custom button styles */
+  .btn-primary {
+    @apply bg-supply-primary hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors focus-ring disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors focus-ring disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply border border-supply-primary text-supply-primary hover:bg-supply-primary hover:text-white font-medium py-2 px-4 rounded-lg transition-all focus-ring disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-md transition-shadow cursor-pointer;
+  }
+
+  /* Status badges */
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .status-success {
+    @apply status-badge bg-green-100 text-green-800;
+  }
+
+  .status-warning {
+    @apply status-badge bg-yellow-100 text-yellow-800;
+  }
+
+  .status-error {
+    @apply status-badge bg-red-100 text-red-800;
+  }
+
+  .status-info {
+    @apply status-badge bg-blue-100 text-blue-800;
+  }
+
+  /* Form styles */
+  .form-input {
+    @apply block w-full rounded-lg border-gray-300 focus:border-supply-primary focus:ring-supply-primary sm:text-sm;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+
+  /* Chart container */
+  .chart-container {
+    @apply relative h-64 w-full;
+  }
+
+  /* Map container */
+  .map-container {
+    @apply relative h-96 w-full rounded-lg overflow-hidden;
+  }
+
+  /* QR Scanner overlay */
+  .qr-overlay {
+    @apply absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center;
+  }
+
+  .qr-viewfinder {
+    @apply w-64 h-64 border-2 border-white rounded-lg;
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .card {
+      @apply p-4;
+    }
+
+    .chart-container {
+      @apply h-48;
+    }
+
+    .map-container {
+      @apply h-64;
+    }
+  }
+
+  /* Print styles */
+  @media print {
+    .no-print {
+      @apply hidden;
+    }
+
+    .card {
+      @apply shadow-none border;
+    }
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease-out;
+}
+
+/* Leaflet map overrides */
+.leaflet-container {
+  @apply rounded-lg;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply rounded-lg;
+}
+
+/* React Query loading states */
+.query-loading {
+  @apply animate-pulse bg-gray-200 rounded;
+}
+
+/* Custom utilities */
+.text-gradient {
+  background: linear-gradient(135deg, rgb(59 130 246), rgb(16 185 129));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-effect {
+  @apply bg-white bg-opacity-20 backdrop-blur-sm border border-white border-opacity-20;
+}
+
+/* Dark mode support (future enhancement) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface: 15 23 42;
+    --color-text: 241 245 249;
+  }
+}
