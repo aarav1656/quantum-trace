@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 import { Hero } from '@/components/sections/Hero'
 import { Features } from '@/components/sections/Features'
 import { Dashboard } from '@/components/sections/Dashboard'
@@ -10,10 +12,20 @@ import { useSupplyChain } from '@/hooks/useSupplyChain'
 
 export default function HomePage() {
   const { initializeConnection, connectionStatus } = useSupplyChain()
+  const router = useRouter()
 
   useEffect(() => {
     initializeConnection()
   }, [initializeConnection])
+
+  const handleStartTrial = () => {
+    toast.success('Redirecting to trial signup...')
+    router.push('/dashboard')
+  }
+
+  const handleViewDemo = () => {
+    toast.info('Demo feature coming soon!')
+  }
 
   return (
     <div className="min-h-screen">
@@ -87,10 +99,16 @@ export default function HomePage() {
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <button className="btn-primary bg-white text-blue-600 hover:bg-gray-100">
+              <button
+                onClick={handleStartTrial}
+                className="btn-primary bg-white text-blue-600 hover:bg-gray-100"
+              >
                 Start Free Trial
               </button>
-              <button className="btn-outline border-white text-white hover:bg-white hover:text-blue-600">
+              <button
+                onClick={handleViewDemo}
+                className="btn-outline border-white text-white hover:bg-white hover:text-blue-600"
+              >
                 View Demo
               </button>
             </motion.div>

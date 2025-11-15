@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
-import { Icon } from 'leaflet'
+import dynamic from 'next/dynamic'
 import { useQuery } from '@tanstack/react-query'
 import {
   TruckIcon,
@@ -21,26 +20,20 @@ import { QRScanner } from '@/components/scanner/QRScanner'
 import { useSupplyChain } from '@/hooks/useSupplyChain'
 import { useWebSocket } from '@/hooks/useWebSocket'
 import { searchProducts, getShipments, Product } from '@/lib/api/products'
-import 'leaflet/dist/leaflet.css'
 
-// Custom map icons
-const truckIcon = new Icon({
-  iconUrl: '/icons/truck.svg',
-  iconSize: [32, 32],
-  iconAnchor: [16, 16],
-})
+// Dynamic import for map component to avoid SSR issues
+const SupplyChainMap = dynamic(
+  () => import('@/components/dashboard/SupplyChainMap'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-96 bg-gray-100 rounded-xl flex items-center justify-center">
+        <div className="text-gray-500">Loading map...</div>
+      </div>
+    ),
+  }
+)
 
-const warehouseIcon = new Icon({
-  iconUrl: '/icons/warehouse.svg',
-  iconSize: [32, 32],
-  iconAnchor: [16, 16],
-})
-
-const storeIcon = new Icon({
-  iconUrl: '/icons/store.svg',
-  iconSize: [32, 32],
-  iconAnchor: [16, 16],
-})
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -185,73 +178,10 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="map-container">
-                {typeof window !== 'undefined' && (
-                  <MapContainer
-                    center={mapCenter as [number, number]}
-                    zoom={6}
-                    style={{ height: '100%', width: '100%' }}
-                  >
-                    <TileLayer
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-
-                    {shipments?.shipments?.map((shipment) => (
-                      <div key={shipment.id}>
-                        {/* Shipment route */}
-                        <Polyline
-                          positions={shipment.route as [number, number][]}
-                          color="#3b82f6"
-                          weight={3}
-                          opacity={0.7}
-                        />
-
-                        {/* Current location */}
-                        {shipment.currentLocation && (
-                          <Marker
-                            position={shipment.currentLocation}
-                            icon={truckIcon}
-                          >
-                          <Popup>
-                            <div className="p-2">
-                              <h4 className="font-semibold">{shipment.id}</h4>
-                              <p className="text-sm text-gray-600">
-                                Status: {shipment.status}
-                              </p>
-                              <p className="text-sm text-gray-600">
-                                ETA: {shipment.estimatedArrival}
-                              </p>
-                              <div className="flex items-center mt-1">
-                                {getStatusIcon(shipment.status)}
-                                <span className="ml-1 text-xs">
-                                  {shipment.status}
-                                </span>
-                              </div>
-                            </div>
-                          </Popup>
-                          </Marker>
-                        )}
-
-                        {/* Destination */}
-                        <Marker
-                          position={shipment.destination}
-                          icon={warehouseIcon}
-                        >
-                          <Popup>
-                            <div className="p-2">
-                              <h4 className="font-semibold">Destination</h4>
-                              <p className="text-sm text-gray-600">
-                                {shipment.destinationName}
-                              </p>
-                            </div>
-                          </Popup>
-                        </Marker>
-                      </div>
-                    ))}
-                  </MapContainer>
-                )}
-              </div>
+              <SupplyChainMap
+                shipments={shipments}
+                mapCenter={mapCenter as [number, number]}
+              />
             </motion.div>
 
             {/* Product Results */}

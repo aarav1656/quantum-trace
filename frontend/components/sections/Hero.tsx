@@ -3,12 +3,25 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRightIcon, PlayIcon } from '@heroicons/react/24/outline'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 interface HeroProps {
   connectionStatus?: 'connected' | 'disconnected' | 'connecting'
 }
 
 export const Hero: React.FC<HeroProps> = ({ connectionStatus = 'disconnected' }) => {
+  const router = useRouter()
+
+  const handleStartTrial = () => {
+    toast.success('Redirecting to trial signup...')
+    router.push('/dashboard')
+  }
+
+  const handleViewDemo = () => {
+    toast.info('Demo feature coming soon!')
+  }
+
   return (
     <div className="relative min-h-[600px] flex items-center justify-center px-4 sm:px-6 lg:px-8">
       {/* Background pattern */}
@@ -68,12 +81,18 @@ export const Hero: React.FC<HeroProps> = ({ connectionStatus = 'disconnected' })
           transition={{ delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <button className="group bg-white text-blue-700 hover:bg-gray-50 font-semibold py-4 px-8 rounded-lg transition-all duration-200 shadow-xl hover:shadow-2xl flex items-center space-x-2">
+          <button
+            onClick={handleStartTrial}
+            className="group bg-white text-blue-700 hover:bg-gray-50 font-semibold py-4 px-8 rounded-lg transition-all duration-200 shadow-xl hover:shadow-2xl flex items-center space-x-2"
+          >
             <span>Start Free Trial</span>
             <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          <button className="group bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold py-4 px-8 rounded-lg transition-all duration-200 flex items-center space-x-2">
+          <button
+            onClick={handleViewDemo}
+            className="group bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold py-4 px-8 rounded-lg transition-all duration-200 flex items-center space-x-2"
+          >
             <PlayIcon className="w-5 h-5" />
             <span>View Demo</span>
           </button>

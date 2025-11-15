@@ -77,9 +77,9 @@ QuantumTrace delivers the first-ever implementation of autonomous IoT device aut
 
 ### **1. Clone & Setup**
 ```bash
-git clone https://github.com/iota-hackathon/supply-chain-solution.git
-cd supply-chain-solution
-npm install
+git clone https://github.com/aarav1656/quantum-trace
+cd quantum-trace
+bun install
 ```
 
 ### **2. Compile Smart Contracts**
@@ -417,19 +417,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - **IOTA Documentation**: https://docs.iota.org/
 - **Move Language**: https://docs.iota.org/developer/iota-101/
 - **Hackathon Details**: https://blog.iota.org/
-- **Live Demo**: [Coming Soon]
-- **Project Repository**: https://github.com/iota-hackathon/supply-chain-solution
 
 ---
-
-## 📞 **Support**
-
-For questions, issues, or support:
-- 📧 Email: team@quantumtrace.io
-- 💬 Discord: [IOTA Discord](https://discord.iota.org/)
-- 🐛 Issues: [GitHub Issues](https://github.com/iota-hackathon/supply-chain-solution/issues)
-
----
-
 **Built with ❤️ for the IOTA ecosystem**
 *Securing global trade with quantum-resistant blockchain technology*

@@ -10,6 +10,8 @@ import {
   ChartBarIcon,
   LockClosedIcon
 } from '@heroicons/react/24/outline'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 const features = [
   {
@@ -60,6 +62,13 @@ const colorClasses = {
 }
 
 export const Features = () => {
+  const router = useRouter()
+
+  const handleStartTrial = () => {
+    toast.success('Redirecting to trial signup...')
+    router.push('/dashboard')
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Section header */}
@@ -126,7 +135,10 @@ export const Features = () => {
           <p className="text-gray-600 mb-6">
             Join thousands of companies already using our platform
           </p>
-          <button className="btn-primary">
+          <button
+            onClick={handleStartTrial}
+            className="btn-primary"
+          >
             Start Your Free Trial
           </button>
         </div>
