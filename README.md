@@ -31,6 +31,8 @@ QuantumTrace delivers the first-ever implementation of autonomous IoT device aut
 - **Complex verification chains** requiring multiple parties
 - **IoT devices lack autonomous authentication** capabilities
 
+<img width="939" height="724" alt="image" src="https://github.com/user-attachments/assets/d0265a3c-e20d-4727-bacc-0458a8d3886c" />
+
 ### **Technical Challenges**
 - Traditional PKI vulnerable to quantum attacks
 - Manual verification processes are slow and expensive
