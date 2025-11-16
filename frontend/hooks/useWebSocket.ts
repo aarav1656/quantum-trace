@@ -4,5 +4,6 @@ export const useWebSocket = () => ({
   connect: () => {},
   disconnect: () => {},
   subscribe: () => {},
-  unsubscribe: () => {}
+  unsubscribe: () => {},
+  lastMessage: null as any
 });

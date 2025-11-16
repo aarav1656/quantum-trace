@@ -1,0 +1,13 @@
+[package]
+name = "supply_chain_tracker"
+edition = "2024.beta"
+license = "MIT"
+authors = ["Supply Chain Hackathon Team"]
+
+[dependencies]
+Iota = { git = "https://github.com/iotaledger/iota.git", subdir = "crates/iota-framework/packages/iota-framework", rev = "develop" }
+
+[addresses]
+supply_chain_tracker = "0x0"
+iota = "0x2"
+std = "0x1"

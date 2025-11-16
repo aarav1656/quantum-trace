@@ -20,7 +20,7 @@ import { LiveUpdates } from '@/components/dashboard/LiveUpdates'
 import { QRScanner } from '@/components/scanner/QRScanner'
 import { useSupplyChain } from '@/hooks/useSupplyChain'
 import { useWebSocket } from '@/hooks/useWebSocket'
-import { searchProducts, getShipments } from '@/lib/api/products'
+import { searchProducts, getShipments, Product } from '@/lib/api/products'
 import 'leaflet/dist/leaflet.css'
 
 // Custom map icons
@@ -44,7 +44,7 @@ const storeIcon = new Icon({
 
 export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [showQRScanner, setShowQRScanner] = useState(false)
   const [mapCenter, setMapCenter] = useState([51.505, -0.09])
 
@@ -197,7 +197,7 @@ export default function DashboardPage() {
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
 
-                    {shipments?.map((shipment) => (
+                    {shipments?.shipments?.map((shipment) => (
                       <div key={shipment.id}>
                         {/* Shipment route */}
                         <Polyline
@@ -208,10 +208,11 @@ export default function DashboardPage() {
                         />
 
                         {/* Current location */}
-                        <Marker
-                          position={shipment.currentLocation}
-                          icon={truckIcon}
-                        >
+                        {shipment.currentLocation && (
+                          <Marker
+                            position={shipment.currentLocation}
+                            icon={truckIcon}
+                          >
                           <Popup>
                             <div className="p-2">
                               <h4 className="font-semibold">{shipment.id}</h4>
@@ -229,7 +230,8 @@ export default function DashboardPage() {
                               </div>
                             </div>
                           </Popup>
-                        </Marker>
+                          </Marker>
+                        )}
 
                         {/* Destination */}
                         <Marker
@@ -263,9 +265,9 @@ export default function DashboardPage() {
                 {searchTerm ? `Search Results for "${searchTerm}"` : 'Recent Products'}
               </h3>
 
-              {products?.length > 0 ? (
+              {(products?.products?.length ?? 0) > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {products.map((product, index) => (
+                  {products?.products?.map((product, index) => (
                     <motion.div
                       key={product.id}
                       initial={{ opacity: 0, y: 20 }}

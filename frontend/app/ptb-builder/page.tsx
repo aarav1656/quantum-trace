@@ -38,12 +38,12 @@ import { PTBProperties } from '@/components/ptb-builder/PTBProperties'
 import { PTBPreview } from '@/components/ptb-builder/PTBPreview'
 import { PTBCodeView } from '@/components/ptb-builder/PTBCodeView'
 import { usePTBBuilder } from '@/hooks/usePTBBuilder'
-import { PTBNodeType } from '@/types/ptb'
+import { PTBNodeType, PTBNode as PTBNodeType_Interface } from '@/types/ptb'
 import toast from 'react-hot-toast'
 
 export default function PTBBuilderPage() {
   const [activeId, setActiveId] = useState<string | null>(null)
-  const [selectedNode, setSelectedNode] = useState<PTBNodeType | null>(null)
+  const [selectedNode, setSelectedNode] = useState<PTBNodeType_Interface | null>(null)
   const [showPreview, setShowPreview] = useState(false)
   const [showCode, setShowCode] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
@@ -99,7 +99,11 @@ export default function PTBBuilderPage() {
           y: event.delta.y - rect.top + 100,
         }
 
-        addNode(nodeType as any, position)
+        addNode({
+          id: `node_${Date.now()}`,
+          type: nodeType as any,
+          position
+        })
         toast.success(`Added ${nodeType} node`)
       }
     }
@@ -117,11 +121,11 @@ export default function PTBBuilderPage() {
     setActiveId(null)
   }, [nodes, addNode])
 
-  const handleNodeSelect = useCallback((node: PTBNodeType) => {
+  const handleNodeSelect = useCallback((node: PTBNodeType_Interface) => {
     setSelectedNode(node)
   }, [])
 
-  const handleNodeUpdate = useCallback((nodeId: string, updates: Partial<PTBNodeType>) => {
+  const handleNodeUpdate = useCallback((nodeId: string, updates: Partial<PTBNodeType_Interface>) => {
     updateNode(nodeId, updates)
     if (selectedNode?.id === nodeId) {
       setSelectedNode({ ...selectedNode, ...updates })
@@ -135,7 +139,7 @@ export default function PTBBuilderPage() {
 
       // Validate PTB first
       const validation = await validatePTB()
-      if (!validation.isValid) {
+      if (!validation.valid) {
         toast.error(`Validation failed: ${validation.errors.join(', ')}`)
         setIsRunning(false)
         return
@@ -368,7 +372,7 @@ export default function PTBBuilderPage() {
             <div className="w-80 bg-white border-l border-gray-200 flex-shrink-0">
               <PTBProperties
                 node={selectedNode}
-                onUpdate={(updates) => handleNodeUpdate(selectedNode.id, updates)}
+                onUpdate={(updates: Partial<PTBNodeType_Interface>) => handleNodeUpdate(selectedNode.id, updates)}
               />
             </div>
           )}

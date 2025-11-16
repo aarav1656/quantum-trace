@@ -13,11 +13,15 @@ export interface Shipment {
   id: string;
   productId: string;
   origin: string;
-  destination: string;
+  destination: [number, number];
+  destinationName: string;
   status: 'in-transit' | 'delivered' | 'pending' | 'delayed';
   estimatedDelivery: string;
   actualDelivery?: string;
   trackingNumber: string;
+  route?: [number, number][];
+  currentLocation?: [number, number];
+  estimatedArrival?: string;
 }
 
 // Products API functions
@@ -65,10 +69,20 @@ export const getShipments = async (): Promise<{ shipments: Shipment[] }> => {
         id: 'SHIP-001',
         productId: '1',
         origin: 'New York, NY',
-        destination: 'Los Angeles, CA',
+        destination: [34.0522, -118.2437], // Los Angeles coordinates
+        destinationName: 'Los Angeles, CA',
         status: 'in-transit',
         estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-        trackingNumber: 'TRK123456789'
+        estimatedArrival: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+        trackingNumber: 'TRK123456789',
+        route: [
+          [40.7128, -74.0060], // New York
+          [39.9612, -82.9988], // Columbus, OH
+          [41.8781, -87.6298], // Chicago, IL
+          [39.7391, -104.9847], // Denver, CO
+          [34.0522, -118.2437] // Los Angeles
+        ],
+        currentLocation: [39.9612, -82.9988]
       }
     ]
   };

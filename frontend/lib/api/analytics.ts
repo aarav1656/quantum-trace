@@ -49,11 +49,21 @@ export const getAnalytics = async (timeRange?: string): Promise<SupplyChainMetri
       ]
     },
     deliveryPerformance: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
       onTime: 94.2,
       delayed: 5.8,
+      late: [4, 10, 6, 8, 5, 7],
+      failed: [1, 3, 2, 3, 1, 2],
       average: 3.2,
       trend: 2.1
-    }
+    },
+    regional: {
+      labels: ['Americas', 'Europe', 'Asia'],
+      data: [45, 30, 25]
+    },
+    globalRoutes: 12,
+    distributionCenters: 8,
+    alerts: 3
   };
 };
 export const getMetrics = async (timeRange?: string) => ({ metrics: {} });

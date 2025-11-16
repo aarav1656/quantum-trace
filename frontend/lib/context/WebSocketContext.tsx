@@ -82,11 +82,12 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   }, [])
 
   // Ping server
-  const ping = useCallback(async () => {
+  const ping = useCallback(async (): Promise<number> => {
     try {
       const pingLatency = await wsManager.ping()
-      setLatency(pingLatency)
-      return pingLatency
+      const numericLatency = typeof pingLatency === 'string' ? parseFloat(pingLatency) : pingLatency
+      setLatency(numericLatency)
+      return numericLatency
     } catch (error) {
       console.error('Ping failed:', error)
       throw error
